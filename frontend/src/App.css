@@ -1,0 +1,102 @@
+/* src/App.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+:root {
+  --primary: #091C47;
+  --secondary: #D0BB8E;
+  --accent: #F6C14A;
+  --text-light: #ffffff;
+  --text-dark: #222222;
+  --bg: #f4f6fa;
+  --card-bg: #ffffff;
+  --font: 'Poppins', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  background-color: var(--bg);
+  color: var(--text-dark);
+  padding-top: 80px; /* for fixed navbar */
+}
+
+nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: var(--primary);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  z-index: 100;
+}
+
+nav .logo {
+  margin-right: auto;
+  height: 40px;
+}
+
+nav a {
+  color: var(--secondary);
+  text-decoration: none;
+  margin-left: 1.5rem;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+nav a:hover {
+  color: var(--accent);
+}
+
+h2 {
+  color: var(--primary);
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+button {
+  background-color: var(--primary);
+  color: var(--text-light);
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: var(--font);
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+button:hover {
+  background-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+#root {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  padding: 1.5rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+/* Utility classes */
+.text-center { text-align: center; }
+.mt-2 { margin-top: 0.5rem; }
+.mt-4 { margin-top: 1rem; }
+.p-2 { padding: 0.5rem; }
+.p-4 { padding: 1rem; }
