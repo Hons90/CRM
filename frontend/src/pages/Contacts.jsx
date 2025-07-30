@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getContacts, getContactDocuments, uploadContactDocument } from '../api';
 import './Contacts.css';
-import { FaPen } from 'react-icons/fa';
+import { FaPen, FaUser, FaBuilding } from 'react-icons/fa';
 
 export default function Contacts() {
   const [contacts, setContacts] = useState([]);
@@ -16,8 +16,8 @@ export default function Contacts() {
   const [form, setForm] = useState({ firstName: '', lastName: '', email: '', mobile: '', companyName: '', notes: '' });
   const [formError, setFormError] = useState('');
   const [saving, setSaving] = useState(false);
-  const [editModal, setEditModal] = useState(false);
-  const [editContact, setEditContact] = useState(null);
+  const [showInlineEdit, setShowInlineEdit] = useState(false);
+  const [selectedContactForEdit, setSelectedContactForEdit] = useState(null);
   const [editForm, setEditForm] = useState({ firstName: '', lastName: '', email: '', mobile: '', companyName: '', notes: '', type: 'individual' });
   const [editFormError, setEditFormError] = useState('');
   const [editSaving, setEditSaving] = useState(false);
@@ -111,8 +111,8 @@ export default function Contacts() {
     }
   };
 
-  const openEditModal = (contact) => {
-    setEditContact(contact);
+  const openInlineEdit = (contact) => {
+    setSelectedContactForEdit(contact);
     setEditForm({
       firstName: contact.firstName || '',
       lastName: contact.lastName || '',
@@ -123,11 +123,7 @@ export default function Contacts() {
       type: contact.type || 'individual',
     });
     setEditFormError('');
-    setEditModal(true);
-  };
-  const closeEditModal = () => {
-    setEditModal(false);
-    setEditFormError('');
+    setShowInlineEdit(true);
   };
   const handleEditFormChange = (e) => {
     const { name, value } = e.target;
@@ -143,7 +139,7 @@ export default function Contacts() {
     setEditSaving(true);
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`/api/contacts/${editContact.id}`, {
+      const res = await fetch(`/api/contacts/${selectedContactForEdit.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -169,7 +165,7 @@ export default function Contacts() {
         setEditSaving(false);
         return;
       }
-      closeEditModal();
+      setShowInlineEdit(false);
       // Refresh contacts
       getContacts().then(r => setContacts(r.data));
     } catch (err) {
@@ -198,6 +194,60 @@ export default function Contacts() {
 
   return (
     <div className="contacts-list">
+      <div className="contacts-page-header">
+        <div className="contacts-title-section">
+          <h1 className="page-title">Contacts</h1>
+          <p className="page-subtitle">Manage your contacts and documents</p>
+        </div>
+        <button className="add-contact-btn" onClick={openModal}>+ Add Contact</button>
+      </div>
+
+      {showInlineEdit && selectedContactForEdit && (
+        <div className="inline-edit-form">
+          <h2>Edit Contact</h2>
+          <form onSubmit={handleEditSave} className="edit-contact-form">
+            <div className="form-row">
+              <div className="form-group">
+                <label>Type</label>
+                <select name="type" value={editForm.type} onChange={handleEditFormChange}>
+                  <option value="individual">Individual</option>
+                  <option value="business">Business</option>
+                </select>
+              </div>
+              <div className="form-group">
+                <label>First Name *</label>
+                <input name="firstName" value={editForm.firstName} onChange={handleEditFormChange} required />
+              </div>
+              <div className="form-group">
+                <label>Mobile *</label>
+                <input name="mobile" value={editForm.mobile} onChange={handleEditFormChange} required />
+              </div>
+            </div>
+            <div className="form-row">
+              <div className="form-group">
+                <label>Last Name</label>
+                <input name="lastName" value={editForm.lastName} onChange={handleEditFormChange} />
+              </div>
+              <div className="form-group">
+                <label>Email</label>
+                <input name="email" value={editForm.email} onChange={handleEditFormChange} type="email" />
+              </div>
+              <div className="form-group">
+                <label>Notes</label>
+                <input name="notes" value={editForm.notes} onChange={handleEditFormChange} />
+              </div>
+            </div>
+            {editFormError && <div className="form-error">{editFormError}</div>}
+            <div className="form-actions">
+              <button type="submit" className="update-btn" disabled={editSaving}>
+                {editSaving ? 'Updating...' : 'Update Contact'}
+              </button>
+              <button type="button" className="cancel-btn" onClick={() => setShowInlineEdit(false)}>Cancel</button>
+            </div>
+          </form>
+        </div>
+      )}
+
       <div className="contacts-controls-row">
         <input
           className="search-input"
@@ -215,47 +265,36 @@ export default function Contacts() {
           <option value="individual">Individual</option>
           <option value="business">Business</option>
         </select>
-        <button className="add-client-btn" onClick={openModal}>Add Client</button>
       </div>
-      <h1 className="list-header">Contacts Management</h1>
       {filteredContacts.map(c => (
         <div key={c.id} className="contact-card">
-          <div className="card-header" onClick={() => toggleDetails(c.id)}>
-            <div className="name-type">
-              <span className="name-type-left">
-                <span className="name">{c.type === 'business' && c.companyName ? c.companyName : `${c.firstName} ${c.lastName}`.trim()}</span>
-                <span className="type">{c.type}</span>
-              </span>
-              <button className="edit-client-btn" onClick={e => { e.stopPropagation(); openEditModal(c); }}>
-                <FaPen style={{ marginRight: '0.4em', fontSize: '1em' }} /> Edit
-              </button>
-            </div>
-          </div>
-          <div className="card-details" onClick={() => toggleDetails(c.id)}>
-            <span className="email">📧 {c.email}</span>
-            <span className="phone">📞 {c.mobile}</span>
-          </div>
-          <div className="card-upload">
-            <div className="card-upload-left">
-              <input type="file" multiple onChange={e => handleFileChange(c.id, e.target.files)} />
-            </div>
-            <div className="card-upload-right">
-              <button onClick={() => handleUpload(c.id)}>Upload Docs</button>
-              {uploadSuccessById[c.id] && (
-                <span className="upload-success">Upload successful!</span>
+          <div className="contact-card-main">
+            <div className="contact-avatar">
+              {c.type === 'business' ? (
+                <FaBuilding className="avatar-icon business" />
+              ) : (
+                <FaUser className="avatar-icon individual" />
               )}
             </div>
-          </div>
-          {openId === c.id && (
-            <div className="doc-list">
-              {(docsById[c.id] || []).map(doc => (
-                <div key={doc.id} className="doc-row">
-                  <span>{doc.documentType} – {new Date(doc.uploadedAt).toLocaleDateString()}</span>
-                  <a href={`http://localhost:5050/api/download/${doc.filePath.split('/').pop()}`}>Download</a>
-                </div>
-              ))}
+            <div className="contact-info">
+              <div className="contact-header">
+                <h3 className="contact-name">
+                  {c.type === 'business' && c.companyName ? c.companyName : `${c.firstName} ${c.lastName}`.trim()}
+                </h3>
+                <span className="contact-type-badge">{c.type}</span>
+              </div>
+              <div className="contact-details">
+                <span className="contact-email">{c.email}</span>
+                <span className="contact-mobile">{c.mobile}</span>
+              </div>
             </div>
-          )}
+            <button 
+              className="edit-contact-btn" 
+              onClick={() => openInlineEdit(c)}
+            >
+              <FaPen /> Edit
+            </button>
+          </div>
         </div>
       ))}
       {/* Modal for Add Client */}
@@ -302,55 +341,6 @@ export default function Contacts() {
               <div className="modal-actions">
                 <button type="button" onClick={closeModal} className="cancel-btn">Cancel</button>
                 <button type="submit" className="save-btn" disabled={saving}>{saving ? 'Saving...' : 'Create Contact'}</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-      {/* Modal for Edit Client */}
-      {editModal && (
-        <div className="modal-overlay" onClick={closeEditModal}>
-          <div className="modal" onClick={e => e.stopPropagation()}>
-            <div className="client-type-tabs">
-              <button type="button" className={editForm.type === 'individual' ? 'tab active' : 'tab'} onClick={() => setEditForm(f => ({ ...f, type: 'individual' }))}>Individual</button>
-              <button type="button" className={editForm.type === 'business' ? 'tab active' : 'tab'} onClick={() => setEditForm(f => ({ ...f, type: 'business' }))}>Business</button>
-            </div>
-            <h2>Edit Client</h2>
-            <form onSubmit={handleEditSave} className="add-client-form">
-              {editForm.type === 'individual' && (
-                <>
-                  <div className="form-group required">
-                    <label>First Name<span>*</span></label>
-                    <input name="firstName" value={editForm.firstName} onChange={handleEditFormChange} required />
-                  </div>
-                  <div className="form-group">
-                    <label>Last Name</label>
-                    <input name="lastName" value={editForm.lastName} onChange={handleEditFormChange} />
-                  </div>
-                </>
-              )}
-              {editForm.type === 'business' && (
-                <div className="form-group required">
-                  <label>Company Name<span>*</span></label>
-                  <input name="companyName" value={editForm.companyName} onChange={handleEditFormChange} required />
-                </div>
-              )}
-              <div className="form-group required">
-                <label>Mobile<span>*</span></label>
-                <input name="mobile" value={editForm.mobile} onChange={handleEditFormChange} required />
-              </div>
-              <div className="form-group">
-                <label>Email</label>
-                <input name="email" value={editForm.email} onChange={handleEditFormChange} type="email" />
-              </div>
-              <div className="form-group">
-                <label>Notes</label>
-                <input name="notes" value={editForm.notes} onChange={handleEditFormChange} />
-              </div>
-              {editFormError && <div className="form-error">{editFormError}</div>}
-              <div className="modal-actions">
-                <button type="button" onClick={closeEditModal} className="cancel-btn">Cancel</button>
-                <button type="submit" className="save-btn" disabled={editSaving}>{editSaving ? 'Saving...' : 'Save Changes'}</button>
               </div>
             </form>
           </div>
