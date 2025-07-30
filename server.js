@@ -6,9 +6,10 @@ const app = express(); // <--- Moved this up
 
 // Enable CORS for frontend (adjust origin if needed)
 app.use(cors({
-  origin: 'http://localhost:5173',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true
+  origin: ['http://localhost:5173', 'http://localhost:5174'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 // JSON Middleware
@@ -30,6 +31,9 @@ const contactsRouter = require('./routes/contacts');
 const dialerPoolsRouter = require('./routes/dialerPools');
 const appointmentsRouter = require('./routes/appointments');
 const dashboardRouter = require('./routes/dashboard');
+const callsRouter = require('./routes/calls');
+const calendarRouter = require('./routes/calendar');
+const adminRouter = require('./routes/admin');
 
 // Routes
 app.use('/api/auth', authRouter);
@@ -37,6 +41,9 @@ app.use('/api/contacts', contactsRouter);
 app.use('/api/dialer-pools', dialerPoolsRouter);
 app.use('/api/appointments', appointmentsRouter);
 app.use('/api/dashboard', dashboardRouter);
+app.use('/api/calls', callsRouter);
+app.use('/api/calendar', calendarRouter);
+app.use('/api/admin', adminRouter);
 
 // Download endpoint to force file download
 app.get('/api/download/:filename', (req, res) => {

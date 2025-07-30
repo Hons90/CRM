@@ -19,14 +19,15 @@ exports.login = async (req, res, next) => {
     console.log("User found:", user);
 
     // If no user or wrong password
-    if (!user || user.passwordHash !== password) {
+    const isValidPassword = user ? await bcrypt.compare(password, user.passwordHash) : false;
+    if (!user || !isValidPassword) {
       console.log("Invalid login credentials");
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
     // Generate a JWT token
     const token = jwt.sign(
-      { id: user.id, email: user.email, role: user.role },
+      { userId: user.id, email: user.email, role: user.role },
       process.env.JWT_SECRET || 'karus-secret',
       { expiresIn: '1h' }
     );
@@ -81,6 +82,55 @@ exports.updateMe = async (req, res, next) => {
     });
     res.json({ id: updated.id, name: updated.name, email: updated.email, role: updated.role });
   } catch (err) {
+    next(err);
+  }
+};
+
+exports.refresh = async (req, res, next) => {
+  try {
+    const { refreshToken } = req.body;
+    
+    if (!refreshToken) {
+      return res.status(401).json({ error: 'Refresh token required' });
+    }
+
+    const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET);
+    const user = await prisma.user.findUnique({
+      where: { id: decoded.userId }
+    });
+
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid refresh token' });
+    }
+
+    const newAccessToken = jwt.sign(
+      { userId: user.id, email: user.email, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
+    const newRefreshToken = jwt.sign(
+      { userId: user.id },
+      process.env.JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+
+    res.json({
+      accessToken: newAccessToken,
+      refreshToken: newRefreshToken,
+      user: { id: user.id, name: user.name, email: user.email, role: user.role }
+    });
+  } catch (err) {
+    console.error('Token refresh error:', err);
+    res.status(401).json({ error: 'Invalid refresh token' });
+  }
+};
+
+exports.logout = async (req, res, next) => {
+  try {
+    res.json({ message: 'Logged out successfully' });
+  } catch (err) {
+    console.error('Logout error:', err);
     next(err);
   }
 };

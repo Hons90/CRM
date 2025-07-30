@@ -1,0 +1,150 @@
+.calls-container {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.calls-container h1 {
+  color: var(--primary);
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.calls-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2rem;
+}
+
+.pools-section, .numbers-section, .logs-section {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.pools-section h2, .numbers-section h2, .logs-section h2 {
+  color: var(--primary);
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.pool-card {
+  background: #f8f9fa;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pool-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.pool-card.selected {
+  border-color: var(--accent);
+  background: #fff9e6;
+}
+
+.number-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.phone-number {
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.status.called {
+  color: #28a745;
+}
+
+.status.pending {
+  color: #ffc107;
+}
+
+.dial-button {
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dial-button:hover:not(:disabled) {
+  background: #e67e22;
+  transform: translateY(-1px);
+}
+
+.dial-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.log-card {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.log-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.log-status .status {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.status.completed { background: #d4edda; color: #155724; }
+.status.not_interested { background: #f8d7da; color: #721c24; }
+.status.interested { background: #fff3cd; color: #856404; }
+.status.initiated { background: #cce5ff; color: #004085; }
+.status.other { background: #e2e3e5; color: #383d41; }
+
+.qualify-buttons {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.qualify-buttons button {
+  background: var(--secondary);
+  color: var(--primary);
+  border: none;
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.qualify-buttons button:hover {
+  background: var(--accent);
+  color: white;
+}
+
+@media (max-width: 1200px) {
+  .calls-grid {
+    grid-template-columns: 1fr;
+  }
+}

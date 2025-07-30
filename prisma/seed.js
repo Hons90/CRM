@@ -1,4 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
+const bcrypt = require('bcryptjs');
 const prisma = new PrismaClient();
 
 function randomInt(min, max) {
@@ -20,7 +21,7 @@ async function main() {
     data: {
       name: 'Karus Admin',
       email: 'karus.admin@example.com',
-      passwordHash: 'adminpass',
+      passwordHash: await bcrypt.hash('adminpass', 10),
       role: 'admin',
     }
   });
@@ -28,7 +29,7 @@ async function main() {
     data: {
       name: 'John',
       email: 'john.employee@example.com',
-      passwordHash: 'johnpass',
+      passwordHash: await bcrypt.hash('johnpass', 10),
       role: 'employee',
     }
   });
@@ -36,7 +37,7 @@ async function main() {
     data: {
       name: 'Sarah',
       email: 'sarah.employee@example.com',
-      passwordHash: 'sarahpass',
+      passwordHash: await bcrypt.hash('sarahpass', 10),
       role: 'employee',
     }
   });
@@ -152,4 +153,4 @@ async function main() {
 
 main()
   .catch(e => { console.error(e); process.exit(1); })
-  .finally(() => prisma.$disconnect()); 
+  .finally(() => prisma.$disconnect());  
