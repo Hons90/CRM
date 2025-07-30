@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './Profile.css';
 
 export default function Profile() {
   const user = JSON.parse(localStorage.getItem('user'));
@@ -51,55 +52,87 @@ export default function Profile() {
   };
 
   return (
-    <div style={{ maxWidth: 400, margin: '2rem auto', padding: '1.5rem', background: '#fff', borderRadius: 8, boxShadow: '0 2px 8px rgba(0,0,0,0.07)' }}>
-      <h2>Profile</h2>
-      <form onSubmit={handleSave}>
-        <div style={{ marginBottom: '1rem' }}>
-          <label style={{ fontWeight: 500 }}>Username</label>
-          <input
-            type="text"
-            value={name}
-            onChange={e => setName(e.target.value)}
-            style={{ width: '100%', padding: '0.5rem', marginTop: 4 }}
-            required
-          />
+    <div className="profile-container">
+      <div className="profile-card">
+        <div className="profile-header">
+          <div className="profile-avatar">
+            <span>{name.charAt(0).toUpperCase()}</span>
+          </div>
+          <h2>Profile Settings</h2>
+          <p>Manage your account information and security</p>
         </div>
-        <div style={{ marginBottom: '1rem' }}>
-          <label style={{ fontWeight: 500 }}>Current Password (required to change password)</label>
-          <input
-            type="password"
-            value={currentPassword}
-            onChange={e => setCurrentPassword(e.target.value)}
-            style={{ width: '100%', padding: '0.5rem', marginTop: 4 }}
-            autoComplete="current-password"
-          />
-        </div>
-        <div style={{ marginBottom: '1rem' }}>
-          <label style={{ fontWeight: 500 }}>New Password</label>
-          <input
-            type="password"
-            value={newPassword}
-            onChange={e => setNewPassword(e.target.value)}
-            style={{ width: '100%', padding: '0.5rem', marginTop: 4 }}
-            autoComplete="new-password"
-          />
-        </div>
-        <div style={{ marginBottom: '1rem' }}>
-          <label style={{ fontWeight: 500 }}>Confirm New Password</label>
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={e => setConfirmPassword(e.target.value)}
-            style={{ width: '100%', padding: '0.5rem', marginTop: 4 }}
-            autoComplete="new-password"
-          />
-        </div>
-        {error && <div style={{ color: '#e74c3c', marginBottom: 10 }}>{error}</div>}
-        {message && <div style={{ color: '#27ae60', marginBottom: 10 }}>{message}</div>}
-        <button type="submit" style={{ width: '100%', padding: '0.7rem', background: '#091C47', color: '#fff', border: 'none', borderRadius: 6, fontWeight: 600 }} disabled={saving}>
-          {saving ? 'Saving...' : 'Save Changes'}
-        </button>
-      </form>
+        
+        <form onSubmit={handleSave} className="profile-form">
+          <div className="form-section">
+            <h3>Personal Information</h3>
+            <div className="form-group">
+              <label htmlFor="username">Username</label>
+              <input
+                id="username"
+                type="text"
+                value={name}
+                onChange={e => setName(e.target.value)}
+                className="form-input"
+                required
+              />
+            </div>
+          </div>
+
+          <div className="form-section">
+            <h3>Change Password</h3>
+            <div className="form-group">
+              <label htmlFor="current-password">Current Password</label>
+              <input
+                id="current-password"
+                type="password"
+                value={currentPassword}
+                onChange={e => setCurrentPassword(e.target.value)}
+                className="form-input"
+                autoComplete="current-password"
+                placeholder="Required to change password"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="new-password">New Password</label>
+              <input
+                id="new-password"
+                type="password"
+                value={newPassword}
+                onChange={e => setNewPassword(e.target.value)}
+                className="form-input"
+                autoComplete="new-password"
+                placeholder="Enter new password"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="confirm-password">Confirm New Password</label>
+              <input
+                id="confirm-password"
+                type="password"
+                value={confirmPassword}
+                onChange={e => setConfirmPassword(e.target.value)}
+                className="form-input"
+                autoComplete="new-password"
+                placeholder="Confirm new password"
+              />
+            </div>
+          </div>
+
+          {error && <div className="error-message">{error}</div>}
+          {message && <div className="success-message">{message}</div>}
+          
+          <button type="submit" className="save-button" disabled={saving}>
+            {saving ? (
+              <span className="button-content">
+                <span className="spinner"></span>
+                Saving Changes...
+              </span>
+            ) : (
+              'Save Changes'
+            )}
+          </button>
+        </form>
+      </div>
     </div>
   );
-} 
+}  
