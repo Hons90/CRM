@@ -286,6 +286,7 @@
   border-radius: 8px;
   margin-bottom: 1rem;
   transition: transform 0.2s, box-shadow 0.2s;
+  overflow: hidden;
 }
 
 .contact-card:hover {
@@ -377,6 +378,115 @@
 .edit-contact-btn:hover {
   background: var(--accent);
   color: var(--text-light);
+}
+
+/* Document Upload Section */
+.contact-card-documents {
+  border-top: 1px solid #e2e8f0;
+  background: #fafafa;
+  padding: 1rem;
+}
+
+.document-upload-section {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.file-input {
+  flex: 1;
+  font-size: 0.85rem;
+  padding: 0.4rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  background: white;
+}
+
+.upload-btn {
+  background: var(--primary);
+  color: var(--text-light);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.upload-btn:hover:not(:disabled) {
+  background: var(--accent);
+}
+
+.upload-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.view-docs-btn {
+  background: var(--secondary);
+  color: var(--text-dark);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.view-docs-btn:hover {
+  background: var(--accent);
+  color: var(--text-light);
+}
+
+.upload-success {
+  color: #22c55e;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.document-list {
+  border-top: 1px solid #e2e8f0;
+  padding-top: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.document-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.document-item:last-child {
+  border-bottom: none;
+}
+
+.document-item a {
+  color: var(--primary);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.document-item a:hover {
+  text-decoration: underline;
+}
+
+.document-date {
+  font-size: 0.75rem;
+  color: #666;
+}
+
+.no-documents {
+  text-align: center;
+  color: #777;
+  font-size: 0.85rem;
+  padding: 1rem;
 }
 
 @media (max-width: 768px) {

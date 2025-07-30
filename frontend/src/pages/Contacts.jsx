@@ -266,37 +266,84 @@ export default function Contacts() {
           <option value="business">Business</option>
         </select>
       </div>
-      {filteredContacts.map(c => (
-        <div key={c.id} className="contact-card">
-          <div className="contact-card-main">
-            <div className="contact-avatar">
-              {c.type === 'business' ? (
-                <FaBuilding className="avatar-icon business" />
-              ) : (
-                <FaUser className="avatar-icon individual" />
-              )}
-            </div>
-            <div className="contact-info">
-              <div className="contact-header">
-                <h3 className="contact-name">
-                  {c.type === 'business' && c.companyName ? c.companyName : `${c.firstName} ${c.lastName}`.trim()}
-                </h3>
-                <span className="contact-type-badge">{c.type}</span>
-              </div>
-              <div className="contact-details">
-                <span className="contact-email">{c.email}</span>
-                <span className="contact-mobile">{c.mobile}</span>
-              </div>
-            </div>
-            <button 
-              className="edit-contact-btn" 
-              onClick={() => openInlineEdit(c)}
-            >
-              <FaPen /> Edit
-            </button>
-          </div>
-        </div>
-      ))}
+       {filteredContacts.map(c => (
+         <div key={c.id} className="contact-card">
+           <div className="contact-card-main">
+             <div className="contact-avatar">
+               {c.type === 'business' ? (
+                 <FaBuilding className="avatar-icon business" />
+               ) : (
+                 <FaUser className="avatar-icon individual" />
+               )}
+             </div>
+             <div className="contact-info">
+               <div className="contact-header">
+                 <h3 className="contact-name">
+                   {c.type === 'business' && c.companyName ? c.companyName : `${c.firstName} ${c.lastName}`.trim()}
+                 </h3>
+                 <span className="contact-type-badge">{c.type}</span>
+               </div>
+               <div className="contact-details">
+                 <span className="contact-email">{c.email}</span>
+                 <span className="contact-mobile">{c.mobile}</span>
+               </div>
+             </div>
+             <button 
+               className="edit-contact-btn" 
+               onClick={() => openInlineEdit(c)}
+             >
+               <FaPen /> Edit
+             </button>
+           </div>
+           
+           {/* Document Upload Section */}
+           <div className="contact-card-documents">
+             <div className="document-upload-section">
+               <input
+                 type="file"
+                 onChange={(e) => handleFileChange(c.id, e.target.files)}
+                 className="file-input"
+               />
+               <button
+                 onClick={() => handleUpload(c.id)}
+                 disabled={!filesById[c.id]}
+                 className="upload-btn"
+               >
+                 Upload Document
+               </button>
+               <button
+                 onClick={() => toggleDetails(c.id)}
+                 className="view-docs-btn"
+               >
+                 View Documents
+               </button>
+             </div>
+             
+             {uploadSuccessById[c.id] && (
+               <div className="upload-success">Document uploaded successfully!</div>
+             )}
+             
+             {openId === c.id && (
+               <div className="document-list">
+                 {docsById[c.id] && docsById[c.id].length > 0 ? (
+                   docsById[c.id].map(doc => (
+                     <div key={doc.id} className="document-item">
+                       <a href={`http://localhost:3000/uploads/${doc.filename}`} target="_blank" rel="noopener noreferrer">
+                         {doc.originalName}
+                       </a>
+                       <span className="document-date">
+                         {new Date(doc.uploadedAt).toLocaleDateString()}
+                       </span>
+                     </div>
+                   ))
+                 ) : (
+                   <div className="no-documents">No documents uploaded yet.</div>
+                 )}
+               </div>
+             )}
+           </div>
+         </div>
+       ))}
       {/* Modal for Add Client */}
       {showModal && (
         <div className="modal-overlay" onClick={closeModal}>
