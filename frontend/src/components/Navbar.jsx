@@ -35,6 +35,7 @@ export default function Navbar({ user, onLogout }) {
         <div className="nav-links">
           <Link to="/dashboard">Dashboard</Link>
           <Link to="/contacts">Contacts</Link>
+          <Link to="/calls">Calls</Link>
           <Link to="/appointments">Appointments</Link>
           <Link to="/outlook-calendar">Outlook Calendar</Link>
         </div>
@@ -54,4 +55,4 @@ export default function Navbar({ user, onLogout }) {
       </div>
     </nav>
   );
-} 
+}  

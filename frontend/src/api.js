@@ -37,4 +37,23 @@ export const login = (email, password) =>
 export const getContactDocuments = (id) =>
   api.get(`/contacts/${id}/documents`);
 
-export default api; 
+export const getDialerPools = () => api.get('/dialer-pools');
+export const getPoolNumbers = (poolId) => api.get(`/dialer-pools/${poolId}/numbers`);
+
+export const dialNumber = (poolId, phoneNumber) => 
+  api.post('/calls/dial', { poolId, phoneNumber });
+export const qualifyCall = (callId, data) => 
+  api.post(`/calls/${callId}/qualify`, data);
+export const getCallLogs = () => api.get('/calls/logs');
+
+export const getCalendarEvents = () => api.get('/calendar/events');
+
+export const refreshToken = (refreshToken) => 
+  api.post('/auth/refresh', { refreshToken });
+export const logout = () => api.post('/auth/logout');
+
+export const createContact = (data) => api.post('/contacts', data);
+export const updateContact = (id, data) => api.put(`/contacts/${id}`, data);
+export const deleteContact = (id) => api.delete(`/contacts/${id}`);
+
+export default api;   

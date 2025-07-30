@@ -30,6 +30,8 @@ const contactsRouter = require('./routes/contacts');
 const dialerPoolsRouter = require('./routes/dialerPools');
 const appointmentsRouter = require('./routes/appointments');
 const dashboardRouter = require('./routes/dashboard');
+const callsRouter = require('./routes/calls');
+const calendarRouter = require('./routes/calendar');
 
 // Routes
 app.use('/api/auth', authRouter);
@@ -37,6 +39,8 @@ app.use('/api/contacts', contactsRouter);
 app.use('/api/dialer-pools', dialerPoolsRouter);
 app.use('/api/appointments', appointmentsRouter);
 app.use('/api/dashboard', dashboardRouter);
+app.use('/api/calls', callsRouter);
+app.use('/api/calendar', calendarRouter);
 
 // Download endpoint to force file download
 app.get('/api/download/:filename', (req, res) => {

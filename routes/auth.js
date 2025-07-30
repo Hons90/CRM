@@ -12,6 +12,12 @@ router.get('/test', (req, res) => {
 // POST /api/auth/login
 router.post('/login', authController.login);
 
+// POST /api/auth/refresh - rotate JWT tokens
+router.post('/refresh', authController.refresh);
+
+// POST /api/auth/logout - clear tokens
+router.post('/logout', auth, authController.logout);
+
 // Update current user profile
 router.put('/users/me', auth, authController.updateMe);
 
