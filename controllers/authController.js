@@ -19,7 +19,8 @@ exports.login = async (req, res, next) => {
     console.log("User found:", user);
 
     // If no user or wrong password
-    if (!user || user.passwordHash !== password) {
+    const isValidPassword = user ? await bcrypt.compare(password, user.passwordHash) : false;
+    if (!user || !isValidPassword) {
       console.log("Invalid login credentials");
       return res.status(401).json({ error: 'Invalid email or password' });
     }
