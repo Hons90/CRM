@@ -8,6 +8,8 @@ import OutlookCalendar from './pages/OutlookCalendar';
 import Login from './pages/Login';
 import Profile from './pages/Profile';
 import Calls from './pages/Calls';
+import DialerPools from './pages/DialerPools';
+import Admin from './pages/Admin';
 import './App.css';
 
 function App() {
@@ -33,6 +35,8 @@ function App() {
         <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/login" />} />
         <Route path="/contacts" element={user ? <Contacts /> : <Navigate to="/login" />} />
         <Route path="/calls" element={user ? <Calls /> : <Navigate to="/login" />} />
+        <Route path="/dialer-pools" element={user?.role === 'admin' ? <DialerPools /> : <Navigate to="/dashboard" />} />
+        <Route path="/admin" element={user?.role === 'admin' ? <Admin /> : <Navigate to="/dashboard" />} />
         <Route path="/appointments" element={user ? <Appointments /> : <Navigate to="/login" />} />
         <Route path="/outlook-calendar" element={user ? <OutlookCalendar /> : <Navigate to="/login" />} />
         <Route path="/login" element={<Login onLogin={setUser} />} />

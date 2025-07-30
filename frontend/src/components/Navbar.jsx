@@ -36,6 +36,8 @@ export default function Navbar({ user, onLogout }) {
           <Link to="/dashboard">Dashboard</Link>
           <Link to="/contacts">Contacts</Link>
           <Link to="/calls">Calls</Link>
+          {user?.role === 'admin' && <Link to="/dialer-pools">Dialer Pools</Link>}
+          {user?.role === 'admin' && <Link to="/admin">Admin</Link>}
           <Link to="/appointments">Appointments</Link>
           <Link to="/outlook-calendar">Outlook Calendar</Link>
         </div>
@@ -55,4 +57,4 @@ export default function Navbar({ user, onLogout }) {
       </div>
     </nav>
   );
-}  
+}    

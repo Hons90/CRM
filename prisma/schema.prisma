@@ -80,6 +80,7 @@ model DialerPool {
   uploader   User?          @relation("UploadedPools", fields: [uploadedBy], references: [id])
   createdAt  DateTime       @default(now())
   isDeleted  Boolean        @default(false)
+  filePath   String?
   numbers    DialerNumber[]
   callLogs   CallLog[]
 }

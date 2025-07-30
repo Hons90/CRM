@@ -1,120 +1,130 @@
-.outlook-calendar-container {
+.admin-container {
   padding: 2rem;
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
-.calendar-header {
+.page-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
 }
 
-.calendar-header h1 {
+.page-header h1 {
   color: var(--primary);
   font-size: 2rem;
   font-weight: 600;
   margin: 0;
 }
 
-.view-controls {
-  display: flex;
-  gap: 0.5rem;
-  background: white;
-  border-radius: 8px;
-  padding: 0.25rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.view-button {
-  background: transparent;
+.create-button {
+  background: var(--primary);
+  color: white;
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
   cursor: pointer;
-  font-weight: 500;
-  color: var(--primary);
   transition: all 0.2s ease;
 }
 
-.view-button:hover {
-  background: #f8f9fa;
+.create-button:hover {
+  background: #0a1d4a;
+  transform: translateY(-2px);
 }
 
-.view-button.active {
-  background: var(--primary);
-  color: white;
-}
-
-.calendar-wrapper {
+.users-section {
   background: white;
   border-radius: 16px;
   padding: 1.5rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
-.rbc-calendar {
-  font-family: 'Poppins', sans-serif;
+.users-table table {
+  width: 100%;
+  border-collapse: collapse;
 }
 
-.rbc-header {
+.users-table th {
   background: #f8f9fa;
-  color: var(--primary);
+  padding: 1rem;
+  text-align: left;
   font-weight: 600;
-  padding: 1rem 0.5rem;
+  color: var(--primary);
   border-bottom: 2px solid #e9ecef;
 }
 
-.rbc-today {
-  background-color: rgba(9, 28, 71, 0.05);
-}
-
-.rbc-event {
-  background-color: var(--primary);
-  border: none;
-  border-radius: 4px;
-  font-weight: 500;
-}
-
-.rbc-event:focus {
-  outline: 2px solid var(--accent);
-}
-
-.rbc-selected {
-  background-color: var(--secondary) !important;
-}
-
-.rbc-toolbar {
-  margin-bottom: 1rem;
-  padding-bottom: 1rem;
+.users-table td {
+  padding: 1rem;
   border-bottom: 1px solid #e9ecef;
 }
 
-.rbc-toolbar button {
-  background: var(--primary);
+.user-name {
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.role-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.role-badge.admin {
+  background: #d4edda;
+  color: #155724;
+}
+
+.role-badge.employee {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.edit-button {
+  background: var(--secondary);
   color: white;
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 6px;
-  font-weight: 500;
+  font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
-.rbc-toolbar button:hover {
-  background: #0a1d4a;
+.edit-button:hover {
+  background: #c5a87d;
+  transform: translateY(-1px);
 }
 
-.rbc-toolbar button:active,
-.rbc-toolbar button.rbc-active {
-  background: var(--secondary);
+.delete-button {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.rbc-toolbar-label {
-  color: var(--primary);
-  font-weight: 600;
-  font-size: 1.2rem;
+.delete-button:hover {
+  background: #c82333;
+  transform: translateY(-1px);
+}
+
+.no-users {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  padding: 2rem;
 }
 
 .modal-overlay {
@@ -135,10 +145,8 @@
   border-radius: 16px;
   padding: 0;
   width: 90%;
-  max-width: 600px;
+  max-width: 500px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-  max-height: 90vh;
-  overflow-y: auto;
 }
 
 .modal-header {
@@ -181,12 +189,6 @@
   margin-bottom: 1.5rem;
 }
 
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-
 .form-group label {
   display: block;
   margin-bottom: 0.5rem;
@@ -195,25 +197,19 @@
 }
 
 .form-group input,
-.form-group textarea {
+.form-group select {
   width: 100%;
   padding: 0.75rem;
   border: 2px solid #e9ecef;
   border-radius: 8px;
   font-size: 1rem;
-  font-family: 'Poppins', sans-serif;
   transition: border-color 0.2s ease;
 }
 
 .form-group input:focus,
-.form-group textarea:focus {
+.form-group select:focus {
   outline: none;
   border-color: var(--primary);
-}
-
-.form-group textarea {
-  resize: vertical;
-  min-height: 80px;
 }
 
 .modal-actions {
@@ -221,22 +217,6 @@
   gap: 1rem;
   justify-content: flex-end;
   margin-top: 2rem;
-  flex-wrap: wrap;
-}
-
-.delete-button {
-  background: #dc3545;
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  margin-right: auto;
-}
-
-.delete-button:hover {
-  background: #c82333;
 }
 
 .cancel-button {
@@ -263,38 +243,31 @@
   transition: all 0.2s ease;
 }
 
-.submit-button:hover {
+.submit-button:hover:not(:disabled) {
   background: #0a1d4a;
 }
 
-.loading {
-  text-align: center;
-  padding: 3rem;
-  color: var(--primary);
-  font-size: 1.2rem;
+.submit-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 @media (max-width: 768px) {
-  .outlook-calendar-container {
+  .admin-container {
     padding: 1rem;
   }
   
-  .calendar-header {
+  .page-header {
     flex-direction: column;
     gap: 1rem;
     align-items: stretch;
   }
   
-  .form-row {
-    grid-template-columns: 1fr;
-  }
-  
-  .modal-actions {
+  .actions {
     flex-direction: column;
   }
   
-  .delete-button {
-    margin-right: 0;
-    order: 3;
+  .users-table {
+    overflow-x: auto;
   }
 }
